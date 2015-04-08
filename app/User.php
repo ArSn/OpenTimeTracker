@@ -22,7 +22,7 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password'];
+	protected $fillable = ['name', 'email', 'password', 'timezone'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

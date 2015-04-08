@@ -19,3 +19,6 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('/user/settings', ['as' => 'user.settings', 'uses' => 'UserController@showSettings']);
+Route::patch('/user/settings', ['as' => 'user.settings.save', 'uses' => 'UserController@saveSettings']);
