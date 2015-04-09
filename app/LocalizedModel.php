@@ -10,20 +10,8 @@ Use Auth;
  *
  * @package App
  */
-class LocalizedModel extends Model {
-
-	/**
-	 * Convert a DateTime to a storable string.
-	 *
-	 * @param  \DateTime|int  $value
-	 * @return string
-	 */
-	public function fromDateTime($value)
-	{
-		$dateTime = $this->asDateTime($value);
-		return parent::fromDateTime($dateTime);
-	}
-
+class LocalizedModel extends Model
+{
 	/**
 	 * Return a timestamp as DateTime object.
 	 *
@@ -37,6 +25,11 @@ class LocalizedModel extends Model {
 		return $dateTime;
 	}
 
+	/**
+	 * Sets the timezone of the user to the passed Carbon DateTime object, IFF it is available.
+	 *
+	 * @param Carbon $dateTime
+	 */
 	private function setTimeZoneIfAvailable(Carbon $dateTime)
 	{
 		if (Auth::check() && Auth::user()->timezone) {

@@ -8,19 +8,7 @@
 				<div class="panel-heading">Home</div>
 
 				<div class="panel-body">
-					You are logged in!
-					<?php
-					//$date = new DateTime();
-					//echo $date->format('Y-m-d H:i:s');
-
-//					$date = \Carbon\Carbon::now();
-//					$date->tz(new DateTimeZone('UTC'));
-//					$officialDate = $date->toRfc2822String();
-//					echo '<br >' . $officialDate;
-
-					echo Auth::user()->created_at;
-
-					?>
+					This page should probably be used to display some kind of dashboard at a later point in time.
 				</div>
 			</div>
 		</div>
