@@ -33,10 +33,15 @@ class TrackingController extends Controller
 		$canStartDay = $user->canStartDay();
 		$canStopDay = $user->canEndDay();
 
+		$canStartPause = $user->canStartPause();
+		$canStopPause = $user->canEndPause();
+
 		return view('tracking.overview', compact(
 			'workdays',
 			'canStartDay',
-			'canStopDay'
+			'canStopDay',
+			'canStartPause',
+			'canStopPause'
 		));
 	}
 
@@ -66,7 +71,14 @@ class TrackingController extends Controller
 
 	public function startPause()
 	{
+		$user = $this->getUser();
 
+		$now = Carbon::now();
+		$user->todaysWorkday()->pauses()->create(['start' => $now]);
+
+		$user->save();
+
+		return redirect()->route('tracking.overview');
 	}
 
 	public function stopPause()

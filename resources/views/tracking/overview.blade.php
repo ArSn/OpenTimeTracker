@@ -13,8 +13,12 @@
 						@if ($canStartDay)
 						<a href="{{ route('tracking.day.start') }}" class="btn btn-success">Start day</a>
 						@endif
+						@if ($canStartPause)
 						<a href="{{ route('tracking.pause.start') }}" class="btn btn-info">Start pause</a>
+						@endif
+						@if ($canStopPause)
 						<a href="{{ route('tracking.pause.stop') }}" class="btn btn-warning">Stop pause</a>
+						@endif
 						@if ($canStopDay)
 						<a href="{{ route('tracking.day.stop') }}" class="btn btn-danger">Stop day</a>
 						@endif

@@ -13,7 +13,7 @@ class Workday extends LocalizedModel
 	/**
 	 * Many-to-one relation for User->Workdays.
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Eloquent
 	 */
 	public function user()
 	{
@@ -23,7 +23,7 @@ class Workday extends LocalizedModel
 	/**
 	 * One-to-many relation for pauses of this workday.
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 * @return \Eloquent
 	 */
 	public function pauses()
 	{
