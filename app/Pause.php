@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Carbon\Carbon;
 
 class Pause extends LocalizedModel
 {
@@ -18,5 +19,30 @@ class Pause extends LocalizedModel
 	public function workday()
 	{
 		return $this->belongsTo('App\Workday');
+	}
+
+	/**
+	 * @todo extract into trait
+	 * @return int
+	 */
+	public function duration()
+	{
+		if (empty($this->start)) {
+			return 0;
+		}
+
+		$end = $this->end;
+		if (empty($end)) {
+			$end = time();
+		} else {
+			$end->setTimezone(new \DateTimeZone(\Config::get('app.timezone')));
+			$end = strtotime($end);
+		}
+
+		/** @var Carbon $start */
+		$start = $this->start;
+		$start->setTimezone(new \DateTimeZone(\Config::get('app.timezone')));
+
+		return ($end - strtotime($start));
 	}
 }

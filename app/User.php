@@ -59,19 +59,41 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	public function canEndDay()
 	{
 		// One can never end a day before starting it
-		if ($this->canStartDay()) {
+		if ($this->canStartDay() || $this->hasCurrentPause()) {
 			return false;
 		}
 
-		return $this->todaysResource()->where('end', null)->count() == 1;
+		return $this->todaysResource()->whereNull('end')->count() == 1;
 	}
 
 	/**
-	 * @return Workday
+	 * @return Workday|null
 	 */
 	public function todaysWorkday()
 	{
 		return $this->todaysResource()->first();
+	}
+
+	/**
+	 * @return Pause|null
+	 */
+	public function currentPause()
+	{
+		$today = $this->todaysWorkday();
+		if (empty($today)) {
+			return null;
+		}
+		$pauses = $today->pauses();
+		return $pauses->whereNotNull('start')->whereNull('end')->first();
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function hasCurrentPause()
+	{
+		$currentPause = $this->currentPause();
+		return (empty($currentPause) === false || empty($currentPause->id) === false);
 	}
 
 	/**
@@ -80,11 +102,9 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	public function canStartPause()
 	{
 		$today = $this->todaysWorkday();
-		if (empty($today)) {
+		if (empty($today) || $this->hasCurrentPause()) {
 			return false;
 		}
-
-		// TODO: Check if there is no other pause going on at the moment
 
 		// Default condition for first pause
 		return $today->start != null && $today->end == null;
@@ -95,15 +115,9 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	 */
 	public function canEndPause()
 	{
-		$today = $this->todaysWorkday();
-		if (empty($today)) {
+		if ($this->hasCurrentPause() === false || $this->canStartDay() || $this->canStartPause() || $this->canEndDay()) {
 			return false;
 		}
-
-//		$pauses = ;
-
-		foreach ($today->pauses() as $pause) {
-			dd($pause);
-		}
+		return true;
 	}
 }
