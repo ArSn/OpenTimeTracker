@@ -16,9 +16,9 @@ class CreateWorkdaysTable extends Migration {
 		{
 			$table->increments('id');
 			$table->unsignedInteger('user_id');
-			$table->dateTime('start');
+			$table->dateTime('start')->useCurrent();
 			$table->dateTime('end')->nullable();
-			$table->timestamps();
+			$table->nullableTimestamps();
 
 			$table->foreign('user_id')
 				->references('id')

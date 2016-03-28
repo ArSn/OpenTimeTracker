@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration {
 			$table->string('password', 60);
 			$table->string('timezone')->default('Europe/Berlin');
 			$table->rememberToken();
-			$table->timestamps();
+			$table->nullableTimestamps();
 		});
 	}
 

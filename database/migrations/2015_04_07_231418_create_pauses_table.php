@@ -16,9 +16,9 @@ class CreatePausesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->unsignedInteger('workday_id');
-			$table->dateTime('start');
+			$table->dateTime('start')->useCurrent();
 			$table->dateTime('end')->nullable();
-			$table->timestamps();
+			$table->nullableTimestamps();
 
 			$table->foreign('workday_id')
 				->references('id')
