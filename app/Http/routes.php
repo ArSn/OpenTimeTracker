@@ -40,3 +40,5 @@ Route::get('tracking/day/start', ['as' => 'tracking.day.start', 'uses' => 'Track
 Route::get('tracking/day/stop', ['as' => 'tracking.day.stop', 'uses' => 'TrackingController@stopDay']);
 Route::get('tracking/pause/start', ['as' => 'tracking.pause.start', 'uses' => 'TrackingController@startPause']);
 Route::get('tracking/pause/stop', ['as' => 'tracking.pause.stop', 'uses' => 'TrackingController@stopPause']);
+Route::get('tracking/edit/{id}', ['as' => 'tracking.record.edit', 'uses' => 'TrackingController@editRecord']);
+Route::patch('tracking/edit/{id}', ['as' => 'tracking.record.save', 'uses' => 'TrackingController@saveRecord']);

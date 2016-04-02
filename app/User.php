@@ -120,4 +120,12 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 		}
 		return true;
 	}
+
+	/**
+	 * @return Carbon
+	 */
+	public function currentDateTimeWithTimezone()
+	{
+		return Carbon::now($this->timezone);
+	}
 }

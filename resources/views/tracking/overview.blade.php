@@ -79,7 +79,7 @@
 								<td>{{ showTime($workday->end) }}</td>
 								<td>{{ showTimeFromDuration($workday->workDuration()) }}</td>
 								<td>{{ showTimeFromDuration($workday->pausesDuration()) }}</td>
-								<td>Edit</td>
+								<td><a href="{{ route('tracking.record.edit', ['id' => $workday->id]) }}">Edit</a></td>
 							</tr>
 						@endforeach
 					</table>

@@ -3,8 +3,10 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Workday;
 use Illuminate\Http\Request;
 
+use Gate;
 use Auth;
 use App\User;
 use Carbon\Carbon;
@@ -53,8 +55,7 @@ class TrackingController extends Controller
 	{
 		$user = $this->getUser();
 
-		$now = Carbon::now();
-		$user->workdays()->create(['start' => $now]);
+		$user->workdays()->create(['start' => $user->currentDateTimeWithTimezone()]);
 
 		$user->save();
 
@@ -66,8 +67,7 @@ class TrackingController extends Controller
 		$user = $this->getUser();
 		$workday = $user->todaysWorkday();
 
-		$now = Carbon::now();
-		$workday->fill(['end' => $now]);
+		$workday->fill(['end' => $user->currentDateTimeWithTimezone()]);
 		$workday->save();
 
 		return redirect()->route('tracking.overview');
@@ -77,8 +77,7 @@ class TrackingController extends Controller
 	{
 		$user = $this->getUser();
 
-		$now = Carbon::now();
-		$user->todaysWorkday()->pauses()->create(['start' => $now]);
+		$user->todaysWorkday()->pauses()->create(['start' => $user->currentDateTimeWithTimezone()]);
 
 		$user->save();
 
@@ -90,11 +89,48 @@ class TrackingController extends Controller
 		$user = $this->getUser();
 		$pause = $user->currentPause();
 
-		$now = Carbon::now();
-		$pause->fill(['end' => $now]);
+		$pause->fill(['end' => $user->currentDateTimeWithTimezone()]);
 		$pause->save();
 
 		return redirect()->route('tracking.overview');
 	}
 
+	private function guardAgainstForbiddenRecordEditingAccess($recordId)
+	{
+		$workday = Workday::find($recordId);
+
+		if (empty($workday) || Gate::denies('edit-tracking', $workday)) {
+			abort(403, 'Forbidden.');
+		}
+	}
+
+	public function editRecord($recordId)
+	{
+		$this->guardAgainstForbiddenRecordEditingAccess($recordId);
+
+		$workday = Workday::find($recordId);
+
+		return view('tracking.edit', compact('workday'));
+	}
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function saveRecord(Request $request, $recordId)
+	{
+		$this->guardAgainstForbiddenRecordEditingAccess($recordId);
+
+		/** @var Workday $workday */
+		$workday = Workday::find($recordId);
+
+		$workday->start = date('Y-m-d', strtotime($workday->start)) . ' ' . $request->get('day_start');
+		$workday->end = date('Y-m-d', strtotime($workday->end)) . ' ' . $request->get('day_end');
+
+		$workday->save();
+
+		// todo: add handling of pauses here
+
+		return redirect()->route('tracking.overview');
+	}
 }

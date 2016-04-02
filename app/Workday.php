@@ -70,4 +70,27 @@ class Workday extends LocalizedModel
 	{
 		return ($this->duration() - $this->pausesDuration());
 	}
+
+	public function getDateAttribute()
+	{
+		return date('Y-m-d', strtotime($this->start));
+	}
+
+	/**
+	 * @todo extract into trait
+	 * @return mixed
+	 */
+	public function getStartTimeAttribute()
+	{
+		return date('H:i:s', strtotime($this->start));
+	}
+
+	/**
+	 * @todo extract into trait
+	 * @return mixed
+	 */
+	public function getEndTimeAttribute()
+	{
+		return date('H:i:s', strtotime($this->end));
+	}
 }

@@ -146,6 +146,7 @@ return [
 		 * Application Service Providers...
 		 */
 		'App\Providers\AppServiceProvider',
+		'App\Providers\AuthServiceProvider',
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
@@ -159,6 +160,11 @@ return [
 		 * LaravelCollective (not core component anymore) HTML/FormBuilder helpers
 		 */
 		'Collective\Html\HtmlServiceProvider',
+
+		/*
+		 * Laravel-Date from: https://github.com/jenssegers/date
+		 */
+		'Jenssegers\Date\DateServiceProvider',
 
 	],
 
@@ -188,6 +194,7 @@ return [
 		'Eloquent'  => 'Illuminate\Database\Eloquent\Model',
 		'Event'     => 'Illuminate\Support\Facades\Event',
 		'File'      => 'Illuminate\Support\Facades\File',
+		'Gate'      => Illuminate\Support\Facades\Gate::class,
 		'Hash'      => 'Illuminate\Support\Facades\Hash',
 		'Input'     => 'Illuminate\Support\Facades\Input',
 		'Inspiring' => 'Illuminate\Foundation\Inspiring',
@@ -214,6 +221,11 @@ return [
 
 		'Form'=> 'Collective\Html\FormFacade',
 		'HTML'=> 'Collective\Html\HtmlFacade',
+
+		/*
+		 * Laravel-Date facade from: https://github.com/jenssegers/date
+		 */
+		'Date' => Jenssegers\Date\Date::class,
 	],
 
 ];

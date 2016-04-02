@@ -13,16 +13,37 @@ Use Auth;
 class LocalizedModel extends Model
 {
 	/**
-	 * Return a timestamp as DateTime object.
-	 *
-	 * @param  mixed  $value
-	 * @return \Carbon\Carbon
+	 * @param string $key
+	 * @return Carbon|mixed
 	 */
-	protected function asDateTime($value)
+	public function getAttributeValue($key)
 	{
-		$dateTime = parent::asDateTime($value);
-		$this->setTimeZoneIfAvailable($dateTime);
-		return $dateTime;
+		if (in_array($key, $this->getDates())) {
+			$value = $this->getAttributeFromArray($key);
+			if ($value !== null) {
+				$dateTime = $this->asDateTime($value);
+				$this->setTimeZoneIfAvailable($dateTime);
+				return $dateTime;
+			}
+		}
+		return parent::getAttributeValue($key);
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function setAttribute($key, $value)
+	{
+		if ($value && in_array($key, $this->getDates())) {
+			if (Auth::check() && Auth::user()->timezone) {
+				$value = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value, new \DateTimeZone(Auth::user()->timezone));
+			}
+			$value = $this->asDateTime($value);
+			$value->setTimezone(new \DateTimeZone(\Config::get('app.timezone')));
+		}
+		return parent::setAttribute($key, $value);
 	}
 
 	/**

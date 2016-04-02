@@ -45,4 +45,22 @@ class Pause extends LocalizedModel
 
 		return ($end - strtotime($start));
 	}
+
+	/**
+	 * @todo extract into trait
+	 * @return mixed
+	 */
+	public function getStartTimeAttribute()
+	{
+		return date('H:i:s', strtotime($this->start));
+	}
+
+	/**
+	 * @todo extract into trait
+	 * @return mixed
+	 */
+	public function getEndTimeAttribute()
+	{
+		return date('H:i:s', strtotime($this->end));
+	}
 }
