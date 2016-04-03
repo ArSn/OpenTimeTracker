@@ -39,8 +39,23 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	 */
 	private function todaysResource()
 	{
-		$now = Carbon::now();
-		return $this->workdays()->where('start', 'like', $now->format('Y-m-d%'));
+
+		$now = $this->currentDateTimeWithTimezone();
+		$userTimezone = new \DateTimeZone($this->timezone);
+		$appTimezone = new \DateTimeZone(\Config::get('app.timezone'));
+
+		$midnightStart = $now->today($userTimezone);
+		$midnightStart = Carbon::createFromFormat('Y-m-d H:i:s', $midnightStart, $userTimezone);
+		$midnightStart->setTimezone($appTimezone);
+
+		$midnightEnd = $now->tomorrow($userTimezone);
+		$midnightEnd = Carbon::createFromFormat('Y-m-d H:i:s', $midnightEnd, $userTimezone);
+		$midnightEnd->setTimezone($appTimezone);
+
+		return $this->workdays()->whereBetween(
+			'start',
+			[$midnightStart->format('Y-m-d H:i:s'), $midnightEnd->format('Y-m-d H:i:s')]
+		);
 	}
 
 	/**
