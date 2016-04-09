@@ -39,6 +39,22 @@ function showTime(Carbon $dateTime = null)
 }
 
 /**
+ * Returns both, the date and the time part of the passed date time object, as a formatted string.
+ *
+ * @param Carbon|null $dateTime
+ * @return string
+ */
+function showDateTime(Carbon $dateTime = null)
+{
+	if ($dateTime == null) {
+		return '';
+	}
+	$user = Auth::user();
+	$dateTime->setTimezone($user->timezone);
+	return $dateTime->format('Y-m-d H:i:s');
+}
+
+/**
  * Returns a formatted duration string in HH:MM:SS format for passed seconds.
  *
  * @param int $duration Duration in seconds.

@@ -38,7 +38,7 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Tracking overview (updated {{ $now->format('Y-m-d H:i:s') }})</div>
+				<div class="panel-heading">Tracking overview (updated {{ showDateTime($now) }})</div>
 
 				<div class="panel-body">
 
