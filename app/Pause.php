@@ -1,8 +1,9 @@
 <?php namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
-class Pause extends LocalizedModel
+class Pause extends Model
 {
 	protected $fillable = ['start', 'end'];
 
@@ -35,13 +36,11 @@ class Pause extends LocalizedModel
 		if (empty($end)) {
 			$end = time();
 		} else {
-			$end->setTimezone(new \DateTimeZone(\Config::get('app.timezone')));
 			$end = strtotime($end);
 		}
 
 		/** @var Carbon $start */
 		$start = $this->start;
-		$start->setTimezone(new \DateTimeZone(\Config::get('app.timezone')));
 
 		return ($end - strtotime($start));
 	}

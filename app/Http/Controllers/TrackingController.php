@@ -39,7 +39,6 @@ class TrackingController extends Controller
 		$canStopPause = $user->canEndPause();
 
 		$now = Carbon::now();
-		$now->setTimezone($user->timezone);
 
 		return view('tracking.overview', compact(
 			'workdays',
@@ -55,7 +54,7 @@ class TrackingController extends Controller
 	{
 		$user = $this->getUser();
 
-		$user->workdays()->create(['start' => $user->currentDateTimeWithTimezone()]);
+		$user->workdays()->create(['start' => Carbon::now()]);
 
 		$user->save();
 
@@ -67,7 +66,7 @@ class TrackingController extends Controller
 		$user = $this->getUser();
 		$workday = $user->todaysWorkday();
 
-		$workday->fill(['end' => $user->currentDateTimeWithTimezone()]);
+		$workday->fill(['end' => Carbon::now()]);
 		$workday->save();
 
 		return redirect()->route('tracking.overview');
@@ -77,7 +76,7 @@ class TrackingController extends Controller
 	{
 		$user = $this->getUser();
 
-		$user->todaysWorkday()->pauses()->create(['start' => $user->currentDateTimeWithTimezone()]);
+		$user->todaysWorkday()->pauses()->create(['start' => Carbon::now()]);
 
 		$user->save();
 
@@ -89,7 +88,7 @@ class TrackingController extends Controller
 		$user = $this->getUser();
 		$pause = $user->currentPause();
 
-		$pause->fill(['end' => $user->currentDateTimeWithTimezone()]);
+		$pause->fill(['end' => Carbon::now()]);
 		$pause->save();
 
 		return redirect()->route('tracking.overview');

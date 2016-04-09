@@ -5,8 +5,9 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends LocalizedModel implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 	use Authenticatable, CanResetPassword;
 
@@ -39,22 +40,11 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 	 */
 	private function todaysResource()
 	{
-
-		$now = $this->currentDateTimeWithTimezone();
-		$userTimezone = new \DateTimeZone($this->timezone);
-		$appTimezone = new \DateTimeZone(\Config::get('app.timezone'));
-
-		$midnightStart = $now->today($userTimezone);
-		$midnightStart = Carbon::createFromFormat('Y-m-d H:i:s', $midnightStart, $userTimezone);
-		$midnightStart->setTimezone($appTimezone);
-
-		$midnightEnd = $now->tomorrow($userTimezone);
-		$midnightEnd = Carbon::createFromFormat('Y-m-d H:i:s', $midnightEnd, $userTimezone);
-		$midnightEnd->setTimezone($appTimezone);
+		$now = Carbon::now();
 
 		return $this->workdays()->whereBetween(
 			'start',
-			[$midnightStart->format('Y-m-d H:i:s'), $midnightEnd->format('Y-m-d H:i:s')]
+			[$now->format('Y-m-d 00:00:00'), $now->format('Y-m-d 23:59:59')]
 		);
 	}
 
@@ -134,13 +124,5 @@ class User extends LocalizedModel implements AuthenticatableContract, CanResetPa
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * @return Carbon
-	 */
-	public function currentDateTimeWithTimezone()
-	{
-		return Carbon::now($this->timezone);
 	}
 }

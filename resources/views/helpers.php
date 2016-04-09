@@ -17,6 +17,8 @@ function showDate(Carbon $dateTime = null)
 	if ($dateTime == null) {
 		return '';
 	}
+	$user = Auth::user();
+	$dateTime->setTimezone($user->timezone);
 	return $dateTime->format('Y-m-d');
 }
 
@@ -31,6 +33,8 @@ function showTime(Carbon $dateTime = null)
 	if ($dateTime == null) {
 		return '';
 	}
+	$user = Auth::user();
+	$dateTime->setTimezone($user->timezone);
 	return $dateTime->format('H:i:s');
 }
 
