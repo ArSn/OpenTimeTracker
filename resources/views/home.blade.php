@@ -9,7 +9,7 @@
 
 					<div class="panel-body">
 						<h1>
-							<small>Welcome to Open Time Tracker?</small>
+							<small>Welcome to Open Time Tracker!</small>
 						</h1>
 						<p>This page does currently not contain any useful information. In the planned development
 							steps, this page will at some point in time nead dashboard information for you! So feel
