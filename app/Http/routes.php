@@ -11,15 +11,16 @@
 |
 */
 
-/*
- * Auth and login handling
- */
-Route::get('/', 'Auth\AuthController@getLogin');
-
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+/*
+ * Information displaying actions.
+ */
+Route::get('/', 'AboutController@showAbout');
+Route::get('imprint', 'ImprintController@showImprint');
 
 /*
  * User home page, intended for a dashboard or something.

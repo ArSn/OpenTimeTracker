@@ -33,10 +33,11 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					<li><a href="{{ url('/home') }}">Home</a></li>
 					@if (Auth::check())
 						<li><a href="{{ route('tracking.overview') }}">Tracking</a></li>
 					@endif
+					<li><a href="{{ url('/imprint') }}">Imprint</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
