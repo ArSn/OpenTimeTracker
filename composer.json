@@ -13,7 +13,8 @@
 		"ext-mbstring": "*",
 		"ext-xml": "*",
 		"ext-zlib": "*",
-		"ext-mcrypt": "*"
+		"ext-mcrypt": "*",
+		"doctrine/dbal": "~2.3"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~5.0",

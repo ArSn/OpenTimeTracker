@@ -3,8 +3,28 @@
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Pause
+ *
+ * @property integer $id
+ * @property integer $workday_id
+ * @property \Carbon\Carbon $start
+ * @property \Carbon\Carbon $end
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Workday $workday
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereWorkdayId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereStart($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereEnd($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pause whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Pause extends Model
 {
+	use CanInputUserTimeZone;
+
 	protected $fillable = ['start', 'end'];
 
 	public function getDates()
@@ -43,23 +63,5 @@ class Pause extends Model
 		$start = $this->start;
 
 		return ($end - strtotime($start));
-	}
-
-	/**
-	 * @todo extract into trait
-	 * @return mixed
-	 */
-	public function getStartTimeAttribute()
-	{
-		return date('H:i:s', strtotime($this->start));
-	}
-
-	/**
-	 * @todo extract into trait
-	 * @return mixed
-	 */
-	public function getEndTimeAttribute()
-	{
-		return date('H:i:s', strtotime($this->end));
 	}
 }

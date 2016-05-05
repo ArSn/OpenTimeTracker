@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
+use App\Pause;
 use App\Workday;
 use Illuminate\Http\Request;
 
@@ -114,21 +114,35 @@ class TrackingController extends Controller
 
 	/**
 	 * @param Request $request
+	 * @param int|string $recordId
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function saveRecord(Request $request, $recordId)
 	{
 		$this->guardAgainstForbiddenRecordEditingAccess($recordId);
 
-		/** @var Workday $workday */
+		// workday handling
 		$workday = Workday::find($recordId);
 
-		$workday->start = date('Y-m-d', strtotime($workday->start)) . ' ' . $request->get('day_start');
-		$workday->end = date('Y-m-d', strtotime($workday->end)) . ' ' . $request->get('day_end');
+		$workday->start = $workday->setTimeFromUserTimeZone($workday->start, $request->get('day_start'));
+		$workday->end = $workday->setTimeFromUserTimeZone($workday->end, $request->get('day_end'));
 
 		$workday->save();
 
-		// todo: add handling of pauses here
+		// pauses handling
+		$pauseStarts = $request->get('pause_starts');
+		$pauseEnds = $request->get('pause_ends');
+
+		foreach ($pauseStarts as $id => $pauseStart) {
+			$pauseEnd = $pauseEnds[$id];
+
+			$pause = Pause::find($id);
+
+			$pause->start = $pause->setTimeFromUserTimeZone($pause->start, $pauseStart);
+			$pause->end = $pause->setTimeFromUserTimeZone($pause->end, $pauseEnd);
+
+			$pause->save();
+		}
 
 		return redirect()->route('tracking.overview');
 	}

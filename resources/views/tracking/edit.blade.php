@@ -14,7 +14,7 @@
                         <div class="form-group">
                             {!! Form::label('Day Start', null, ['class' => 'col-md-4 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::time('day_start', $workday->startTime, ['class' => 'form-control']) !!}
+                                {!! Form::time('day_start', showTime($workday->start), ['class' => 'form-control']) !!}
                             </div>
                         </div>
 
@@ -29,8 +29,8 @@
                                     </tr>
                                     @foreach ($workday->pauses as $pause)
                                         <tr>
-                                            <td>{!! Form::time('pause_starts[' . $pause->id . ']', $pause->startTime, ['class' => 'form-control']) !!}</td>
-                                            <td>{!! Form::time('pause_ends[' . $pause->id . ']', $pause->endTime, ['class' => 'form-control']) !!}</td>
+                                            <td>{!! Form::time('pause_starts[' . $pause->id . ']', showTime($pause->start), ['class' => 'form-control']) !!}</td>
+                                            <td>{!! Form::time('pause_ends[' . $pause->id . ']', showTime($pause->end), ['class' => 'form-control']) !!}</td>
                                         </tr>
                                     @endforeach
                                     {{--<tr>--}}
@@ -44,7 +44,7 @@
                         <div class="form-group">
                             {!! Form::label('Day End', null, ['class' => 'col-md-4 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::time('day_end', $workday->endTime, ['class' => 'form-control']) !!}
+                                {!! Form::time('day_end', showTime($workday->end), ['class' => 'form-control']) !!}
                             </div>
                         </div>
 

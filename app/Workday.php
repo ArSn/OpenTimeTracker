@@ -3,8 +3,30 @@
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Workday
+ *
+ * @property integer $id
+ * @property integer $user_id
+ * @property \Carbon\Carbon $start
+ * @property \Carbon\Carbon $end
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Pause[] $pauses
+ * @property-read mixed $date
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereStart($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereEnd($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Workday whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Workday extends Model
 {
+	use CanInputUserTimeZone;
+
 	protected $fillable = ['start', 'end'];
 
 	public function getDates()
@@ -73,23 +95,5 @@ class Workday extends Model
 	public function getDateAttribute()
 	{
 		return date('Y-m-d', strtotime($this->start));
-	}
-
-	/**
-	 * @todo extract into trait
-	 * @return mixed
-	 */
-	public function getStartTimeAttribute()
-	{
-		return date('H:i:s', strtotime($this->start));
-	}
-
-	/**
-	 * @todo extract into trait
-	 * @return mixed
-	 */
-	public function getEndTimeAttribute()
-	{
-		return date('H:i:s', strtotime($this->end));
 	}
 }
