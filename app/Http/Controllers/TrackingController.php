@@ -103,6 +103,18 @@ class TrackingController extends Controller
 		}
 	}
 
+	private function guardAgainstForbiddenPauseEditingAccess(Request $request)
+	{
+		$pauseIds = ($request->get('pause_starts') ?? []) + ($request->get('pause_ends') ?? []);
+
+		foreach ($pauseIds as $pauseId => $irrelevantTime) {
+			$pause = Pause::find($pauseId);
+			if (empty($pause) || Gate::denies('edit-pause', $pause)) {
+				abort(403, 'Forbidden.');
+			}
+		}
+	}
+
 	public function editRecord($recordId)
 	{
 		$this->guardAgainstForbiddenRecordEditingAccess($recordId);
@@ -120,6 +132,7 @@ class TrackingController extends Controller
 	public function saveRecord(Request $request, $recordId)
 	{
 		$this->guardAgainstForbiddenRecordEditingAccess($recordId);
+		$this->guardAgainstForbiddenPauseEditingAccess($request);
 
 		// workday handling
 		$workday = Workday::find($recordId);
