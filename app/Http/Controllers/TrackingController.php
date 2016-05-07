@@ -138,13 +138,16 @@ class TrackingController extends Controller
 		$workday = Workday::find($recordId);
 
 		$workday->start = $workday->setTimeFromUserTimeZone($workday->start, $request->get('day_start'));
-		$workday->end = $workday->setTimeFromUserTimeZone($workday->end, $request->get('day_end'));
+		$dayEnd = $request->get('day_end');
+		if (empty($dayEnd) === false) {
+			$workday->end = $workday->setTimeFromUserTimeZone($workday->end, $dayEnd);
+		}
 
 		$workday->save();
 
 		// pauses handling
-		$pauseStarts = $request->get('pause_starts');
-		$pauseEnds = $request->get('pause_ends');
+		$pauseStarts = $request->get('pause_starts', []);
+		$pauseEnds = $request->get('pause_ends', []);
 
 		foreach ($pauseStarts as $id => $pauseStart) {
 			$pauseEnd = $pauseEnds[$id];
@@ -152,7 +155,9 @@ class TrackingController extends Controller
 			$pause = Pause::find($id);
 
 			$pause->start = $pause->setTimeFromUserTimeZone($pause->start, $pauseStart);
-			$pause->end = $pause->setTimeFromUserTimeZone($pause->end, $pauseEnd);
+			if (empty($pauseEnd) === false) {
+				$pause->end = $pause->setTimeFromUserTimeZone($pause->end, $pauseEnd);
+			}
 
 			$pause->save();
 		}
