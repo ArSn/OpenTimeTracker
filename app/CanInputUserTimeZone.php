@@ -5,7 +5,7 @@ use Carbon\Carbon;
 use Config;
 
 /**
- * This trait is supposed to simplify converting user imput times and date times to the applications timezone.
+ * This trait is supposed to simplify converting user input times and date times to the applications timezone.
  */
 trait CanInputUserTimeZone
 {
