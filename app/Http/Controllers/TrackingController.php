@@ -140,6 +140,9 @@ class TrackingController extends Controller
 		$workday->start = $workday->setTimeFromUserTimeZone($workday->start, $request->get('day_start'));
 		$dayEnd = $request->get('day_end');
 		if (empty($dayEnd) === false) {
+			if (empty($workday->end)) {
+				$workday->end = clone $workday->start;
+			}
 			$workday->end = $workday->setTimeFromUserTimeZone($workday->end, $dayEnd);
 		}
 
