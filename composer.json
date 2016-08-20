@@ -10,10 +10,6 @@
 		"jenssegers/date": "^3.2",
 		"barryvdh/laravel-ide-helper": "~2.0",
 		"php": "~7.0",
-		"ext-mbstring": "*",
-		"ext-xml": "*",
-		"ext-zlib": "*",
-		"ext-mcrypt": "*",
 		"doctrine/dbal": "~2.3"
 	},
 	"require-dev": {
