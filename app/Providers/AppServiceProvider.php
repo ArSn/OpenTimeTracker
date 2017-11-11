@@ -1,18 +1,11 @@
 <?php namespace App\Providers;
 
+use App\Routing\UrlGenerator as AppUrlGenerator;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider {
-
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		//
-	}
+class AppServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Register any application services.
@@ -29,6 +22,9 @@ class AppServiceProvider extends ServiceProvider {
 			'Illuminate\Contracts\Auth\Registrar',
 			'App\Services\Registrar'
 		);
+
+		$this->app->bind(UrlGenerator::class, AppUrlGenerator::class);
+		$this->app->bind('url', AppUrlGenerator::class);
 	}
 
 }

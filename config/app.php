@@ -44,6 +44,19 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| HTTPS Forcing
+	|--------------------------------------------------------------------------
+	|
+	| Whether to generate all URLs with forced https protocol (true) or
+	| to use the default way and try to determine the request protocol (false).
+	| Note that the default mechanism (auto detection) may not work behind load
+	| balancers and such.
+	|
+	*/
+	'force_https' => env('APP_FORCE_HTTPS', false),
+
+	/*
+	|--------------------------------------------------------------------------
 	| Application Timezone
 	|--------------------------------------------------------------------------
 	|
