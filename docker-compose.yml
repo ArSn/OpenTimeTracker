@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     php:
         build: .
@@ -6,3 +6,9 @@ services:
             - .:/var/www/html
         expose:
             - 80
+    mysql:
+        image: mysql:8
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD=1
+        expose:
+            - 3306
