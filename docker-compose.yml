@@ -12,3 +12,7 @@ services:
           - MYSQL_ALLOW_EMPTY_PASSWORD=1
         expose:
             - 3306
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./database/init:/docker-entrypoint-initdb.d
